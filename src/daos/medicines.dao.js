@@ -16,7 +16,11 @@ medicinesDAO.DeleteOne = async(barcode) =>{
     return await Medicine.findOneAndDelete({barcode:barcode})
 }
 
-medicinesDAO.UpdateOne = async(barcode) =>{
-    return await Medicine.findOneAndUpdate({barcode:barcode})
-}
+medicinesDAO.updateOne = async (barcode, updateData) => {
+    return await Medicine.findOneAndUpdate(
+        { barcode: barcode },  // Filtro para encontrar el registro por barcode
+        { $set: updateData },  // Actualiza solo los campos proporcionados en updateData
+        { new: true, runValidators: true }  // Devuelve el documento actualizado y aplica validadores
+    );
+};
 export default medicinesDAO;

@@ -45,15 +45,14 @@ export const DeleteOne = async (req, res) =>{
     })
 }
 
-export const UpdateOne = async (req, res) =>{
-    await medicinesDAO.UpdateOne(req.params.barcode, req.body)
-    .then((medicine) =>{
-        if(medicine != null)
-            res.json({message:"Medicine updated"});
-        else
-            res.json({message:"Medicine not found"});
-    })
-    .catch(err =>{
-        res.json({message:err});
-    })
-}
+export const updateOne = async (req, res) => {
+    try {
+        const updatedMedicine = await medicinesDAO.updateOne(req.params.barcode, req.body);
+        if (!updatedMedicine) {
+            return res.status(404).json({ message: "Medicine not found" });
+        }
+        res.json(updatedMedicine);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+};
